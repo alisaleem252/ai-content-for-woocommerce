@@ -28,6 +28,9 @@ class RTAI_WC_Admin_UI {
         add_action('admin_init', array($this, 'init_settings'));
         add_action('admin_notices', array($this, 'show_admin_notices'));
         add_action('wp_ajax_rtai_wc_save_api_key', array($this, 'handle_save_api_key_ajax'));
+        // add_bulk_modal admin init
+        add_action('current_screen', array($this, 'add_bulk_modal'));
+
     }
     
     /**

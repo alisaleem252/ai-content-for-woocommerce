@@ -491,4 +491,37 @@ class RTAI_WC_Jobs {
             date('Y-m-d', strtotime("-$days days"))
         ));
     }
+    
+    /**
+     * Schedule job with Action Scheduler
+     */
+    public function schedule_with_action_scheduler($job_id, $delay = 0) {
+        if (!function_exists('as_schedule_single_action')) {
+            return false;
+        }
+        
+        // Schedule the job processing with Action Scheduler
+        $hook = 'rtai_wc_process_job';
+        $args = array($job_id);
+        $group = 'rtai-wc-jobs';
+        
+        if ($delay > 0) {
+            $timestamp = time() + $delay;
+        } else {
+            $timestamp = time() + 10; // Small delay to prevent immediate execution conflicts
+        }
+        
+        // Cancel any existing scheduled actions for this job
+        as_unschedule_all_actions($hook, $args, $group);
+        
+        // Schedule new action
+        $action_id = as_schedule_single_action(
+            $timestamp,
+            $hook,
+            $args,
+            $group
+        );
+        
+        return $action_id !== false;
+    }
 }

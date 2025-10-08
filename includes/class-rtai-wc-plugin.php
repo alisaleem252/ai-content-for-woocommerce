@@ -54,6 +54,12 @@ class RTAI_WC_Plugin {
         add_filter('bulk_actions-edit-product', array($this, 'add_bulk_actions'));
         add_filter('handle_bulk_actions-edit-product', array($this, 'handle_bulk_actions'), 10, 3);
         
+        // Admin notices
+        add_action('admin_notices', array($this, 'show_bulk_notices'));
+        
+        // Additional AJAX handlers for bulk operations
+        add_action('wp_ajax_rtai_wc_bulk_generate', array($this, 'ajax_bulk_generate'));
+        add_action('wp_ajax_rtai_wc_cancel_batch', array($this, 'ajax_cancel_batch'));
         // AJAX handlers
         add_action('wp_ajax_rtai_wc_generate_content', array($this, 'ajax_generate_content'));
         add_action('wp_ajax_rtai_wc_get_stream_config', array($this, 'ajax_get_stream_config'));
@@ -63,6 +69,84 @@ class RTAI_WC_Plugin {
         add_action('wp_ajax_rtai_wc_test_connection', array($this, 'ajax_test_connection'));
     }
     
+
+    /**
+     * Show bulk action notices
+     */
+    public function show_bulk_notices() {
+        if (isset($_GET['rtai_bulk_started']) && $_GET['rtai_bulk_started'] == 1) {
+            $count = intval($_GET['count'] ?? 0);
+            $batch_id = sanitize_text_field($_GET['batch_id'] ?? '');
+            
+            echo '<div class="notice notice-success is-dismissible">';
+            echo '<p>' . sprintf(
+                esc_html__('AI content generation started for %d products. Batch ID: %s', 'rapidtextai-woocommerce'),
+                $count,
+                $batch_id
+            ) . '</p>';
+            echo '</div>';
+        }
+    }
+
+    /**
+     * AJAX: Bulk generate content
+     */
+    public function ajax_bulk_generate() {
+        check_ajax_referer('rtai_wc_nonce', 'nonce');
+        
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+        if (!current_user_can('edit_posts')) {
+            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+        }
+        
+        $post_ids = array_map('intval', $_POST['post_ids'] ?? array());
+        $artifacts = array_map('sanitize_key', $_POST['artifacts'] ?? array());
+        $context_overrides = wp_unslash($_POST['context_overrides'] ?? array());
+        
+        if (empty($post_ids) || empty($artifacts)) {
+            wp_send_json_error(__('Invalid parameters.', 'rapidtextai-woocommerce'));
+        }
+        
+        try {
+            $batch_id = RTAI_WC_Jobs::get_instance()->queue_bulk_generation(
+                $post_ids,
+                $artifacts,
+                $context_overrides
+            );
+            
+            wp_send_json_success(array(
+                'batch_id' => $batch_id,
+                'total_jobs' => count($post_ids) * count($artifacts)
+            ));
+        } catch (Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
+
+    /**
+     * AJAX: Cancel batch generation
+     */
+    public function ajax_cancel_batch() {
+        check_ajax_referer('rtai_wc_nonce', 'nonce');
+        
+        if (!current_user_can('edit_posts')) {
+            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+        }
+        
+        $batch_id = sanitize_text_field($_POST['batch_id'] ?? '');
+        
+        if (empty($batch_id)) {
+            wp_send_json_error(__('Invalid batch ID.', 'rapidtextai-woocommerce'));
+        }
+        
+        try {
+            $result = RTAI_WC_Jobs::get_instance()->cancel_batch($batch_id);
+            wp_send_json_success($result);
+        } catch (Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
     /**
      * Initialize plugin components
      */
@@ -121,6 +205,13 @@ class RTAI_WC_Plugin {
             RTAI_WC_PLUGIN_URL . 'assets/js/admin.js',
             array('jquery', 'wp-util'),
             RTAI_WC_VERSION,
+            true
+        );
+        wp_enqueue_script(
+            'rtai-marked',
+            'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+            array(),
+            null,
             true
         );
         

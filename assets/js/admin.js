@@ -182,8 +182,11 @@
                                     
                                     if (data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content) {
                                         var content = data.choices[0].delta.content;
+                                        // Convert markdown content to HTML if marked library is available
+                                        if (typeof marked !== 'undefined') {
+                                            content = marked.parse(content);
+                                        }
                                         fullContent += content;
-                                        
                                         // Update the preview in real-time
                                         var $preview = $content.find('.rtai-stream-preview');
                                         $preview.text(fullContent);
@@ -471,6 +474,105 @@
         },
         
         applySingleContent: function(postId, artifact, content) {
+            
+            // Apply content to the actual product editor fields
+            switch(artifact) {
+                case 'title':
+                    // Update title in both classic and Gutenberg editors
+                    if (typeof wp !== 'undefined' && wp.data && wp.data.dispatch && wp.data.dispatch('core/editor') !== null) {
+                        // Gutenberg editor
+                        wp.data.dispatch('core/editor').editPost({ title: content });
+                    }
+                    // Classic editor and general title field
+                    $('#title, input[name="post_title"]').val(content);
+                    break;
+                    
+                case 'description':
+                case 'long_description':
+                    // Update main content editor
+                    if (typeof wp !== 'undefined' && wp.data && wp.data.dispatch && wp.data.dispatch('core/editor') !== null) {
+                        // Gutenberg editor
+                        wp.data.dispatch('core/editor').editPost({ content: content });
+                    } else if (typeof tinyMCE !== 'undefined' && tinyMCE.activeEditor) {
+                        // TinyMCE classic editor
+                        tinyMCE.activeEditor.setContent(content);
+                    }
+                    // Fallback to textarea
+                    $('#content, textarea[name="content"]').val(content);
+                    break;
+                    
+                case 'short_description':
+                    // Update excerpt/short description
+                    if (typeof wp !== 'undefined' && wp.data && wp.data.dispatch && wp.data.dispatch('core/editor') !== null) {
+                        // Gutenberg editor
+                       wp.data.dispatch('core/editor').editPost({ excerpt: content });
+                    }
+                    // WooCommerce short description field
+                    var $shortDesc = $('#woocommerce-product-data textarea[name="_product_short_description"]');
+                    if ($shortDesc.length && typeof tinyMCE !== 'undefined') {
+                        var shortDescEditor = tinyMCE.get('_product_short_description');
+                        if (shortDescEditor) {
+                            shortDescEditor.setContent(content);
+                        } else {
+                            $shortDesc.val(content);
+                        }
+                    }
+                    // General excerpt field
+                    $('#excerpt, textarea[name="excerpt"]').val(content);
+                    break;
+                    
+                case 'meta_title':
+                case 'seo_title':
+                    // Update SEO title fields (Yoast, RankMath, etc.)
+                    $('input[name="_yoast_wpseo_title"], input[name="rank_math_title"]').val(content).trigger('input');
+                    break;
+                    
+                case 'meta_description':
+                case 'seo_description':
+                    // Update SEO meta description
+                    $('textarea[name="_yoast_wpseo_metadesc"], textarea[name="rank_math_description"]').val(content).trigger('input');
+                    break;
+                    
+                case 'tags':
+                    // Update product tags
+                    if (content) {
+                        var tags = content.split(',').map(function(tag) { return tag.trim(); });
+                        $('#new-tag-product_tag').val(tags.join(', '));
+                        // Trigger tag addition if possible
+                        if ($('#product_tag .button-add-tag').length) {
+                            tags.forEach(function(tag) {
+                                $('#new-tag-product_tag').val(tag);
+                                $('#product_tag .button-add-tag').click();
+                            });
+                        }
+                    }
+                    break;
+                    
+                default:
+                    // For custom artifacts, try to find matching fields
+                    var fieldSelectors = [
+                        'input[name="' + artifact + '"]',
+                        'textarea[name="' + artifact + '"]',
+                        'input[name="_' + artifact + '"]',
+                        'textarea[name="_' + artifact + '"]',
+                        '#' + artifact
+                    ];
+                    
+                    fieldSelectors.forEach(function(selector) {
+                        var $field = $(selector);
+                        if ($field.length) {
+                            $field.val(content).trigger('change');
+                        }
+                    });
+                    break;
+            }
+
+            // Trigger change events to ensure other plugins notice the updates
+            $(document).trigger('rtai_content_applied', {
+                artifact: artifact,
+                content: content,
+                postId: postId
+            });
             return new Promise(function(resolve, reject) {
                 $.ajax({
                     url: rtaiWC.ajaxUrl,
@@ -616,7 +718,7 @@
             var action = $(this).closest('.tablenav').find('select[name="action"]').val();
             if (action === 'rtai_generate_content') {
                 e.preventDefault();
-                
+                alert('Bulk content generation would open a modal here.');
                 var selectedIds = [];
                 $('input[name="post[]"]:checked').each(function() {
                     selectedIds.push(parseInt($(this).val()));

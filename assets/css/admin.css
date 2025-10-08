@@ -468,7 +468,9 @@
     align-items: center;
     justify-content: center;
 }
-
+button.button.rtai-modal-close {
+    width: 60px !important;
+}
 .rtai-modal-close:hover {
     color: #333;
 }

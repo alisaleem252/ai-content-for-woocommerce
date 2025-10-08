@@ -41,7 +41,7 @@ A comprehensive WooCommerce extension that integrates with RapidTextAI to genera
 
 3. **Connect to RapidTextAI**
    - Go to Settings → RapidTextAI
-   - Enter your API key from [RapidTextAI Dashboard](https://app.rapidtextai.com/dashboard)
+   - Enter your API key from [RapidTextAI Dashboard](https://app.rapidtextai.com/)
    - Click "Test Connection" to verify
 
 ## Getting Started

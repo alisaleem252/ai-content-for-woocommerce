@@ -311,7 +311,7 @@ jQuery(document).ready(function($) {
             });
             
             if (selectedArtifacts.length === 0) {
-                alert('<?php esc_js_e('Please select at least one content type.', 'rapidtextai-woocommerce'); ?>');
+                alert('<?php esc_html_e('Please select at least one content type.', 'rapidtextai-woocommerce'); ?>');
                 return;
             }
             
@@ -333,7 +333,7 @@ jQuery(document).ready(function($) {
                 type: 'POST',
                 data: requestData,
                 beforeSend: function() {
-                    $('#rtai-start-bulk').prop('disabled', true).text('<?php esc_js_e('Starting...', 'rapidtextai-woocommerce'); ?>');
+                    $('#rtai-start-bulk').prop('disabled', true).text('<?php esc_html_e('Starting...', 'rapidtextai-woocommerce'); ?>');
                 },
                 success: function(response) {
                     if (response.success) {
@@ -341,13 +341,13 @@ jQuery(document).ready(function($) {
                         self.showProgress();
                         self.startPolling();
                     } else {
-                        alert('<?php esc_js_e('Failed to start generation:', 'rapidtextai-woocommerce'); ?> ' + response.data);
-                        $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_js_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
+                        alert('<?php esc_html_e('Failed to start generation:', 'rapidtextai-woocommerce'); ?> ' + response.data);
+                        $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
                     }
                 },
                 error: function() {
-                    alert('<?php esc_js_e('Error starting generation. Please try again.', 'rapidtextai-woocommerce'); ?>');
-                    $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_js_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
+                    alert('<?php esc_html_e('Error starting generation. Please try again.', 'rapidtextai-woocommerce'); ?>');
+                    $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
                 }
             });
         },
@@ -424,7 +424,7 @@ jQuery(document).ready(function($) {
         cancelGeneration: function() {
             var self = this;
             
-            if (!confirm('<?php esc_js_e('Are you sure you want to cancel the generation?', 'rapidtextai-woocommerce'); ?>')) {
+            if (!confirm('<?php esc_html_e('Are you sure you want to cancel the generation?', 'rapidtextai-woocommerce'); ?>')) {
                 return;
             }
             
