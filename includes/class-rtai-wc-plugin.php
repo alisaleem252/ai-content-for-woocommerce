@@ -33,7 +33,6 @@ class RTAI_WC_Plugin {
      * Initialize WordPress hooks
      */
     private function init_hooks() {
-        add_action('init', array($this, 'load_textdomain'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
         
@@ -80,7 +79,7 @@ class RTAI_WC_Plugin {
             
             echo '<div class="notice notice-success is-dismissible">';
             echo '<p>' . sprintf(
-                esc_html__('AI content generation started for %d products. Batch ID: %s', 'rapidtextai-woocommerce'),
+                esc_html__('AI content generation started for %d products. Batch ID: %s', 'ai-content-for-woocommerce'),
                 $count,
                 $batch_id
             ) . '</p>';
@@ -97,7 +96,7 @@ class RTAI_WC_Plugin {
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_ids = array_map('intval', $_POST['post_ids'] ?? array());
@@ -105,7 +104,7 @@ class RTAI_WC_Plugin {
         $context_overrides = wp_unslash($_POST['context_overrides'] ?? array());
         
         if (empty($post_ids) || empty($artifacts)) {
-            wp_send_json_error(__('Invalid parameters.', 'rapidtextai-woocommerce'));
+            wp_send_json_error(__('Invalid parameters.', 'ai-content-for-woocommerce'));
         }
         
         try {
@@ -131,13 +130,13 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $batch_id = sanitize_text_field($_POST['batch_id'] ?? '');
         
         if (empty($batch_id)) {
-            wp_send_json_error(__('Invalid batch ID.', 'rapidtextai-woocommerce'));
+            wp_send_json_error(__('Invalid batch ID.', 'ai-content-for-woocommerce'));
         }
         
         try {
@@ -171,13 +170,7 @@ class RTAI_WC_Plugin {
         // Initialize integrations
         RTAI_WC_Integrations::get_instance();
     }
-    
-    /**
-     * Load plugin textdomain
-     */
-    public function load_textdomain() {
-        load_plugin_textdomain('rapidtextai-woocommerce', false, dirname(RTAI_WC_PLUGIN_BASENAME) . '/languages');
-    }
+
     
     /**
      * Enqueue admin assets
@@ -219,11 +212,11 @@ class RTAI_WC_Plugin {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('rtai_wc_nonce'),
             'strings' => array(
-                'generating' => __('Generating content...', 'rapidtextai-woocommerce'),
-                'error' => __('Error occurred while generating content.', 'rapidtextai-woocommerce'),
-                'success' => __('Content generated successfully!', 'rapidtextai-woocommerce'),
-                'confirm_apply' => __('Are you sure you want to apply this content?', 'rapidtextai-woocommerce'),
-                'confirm_rollback' => __('Are you sure you want to rollback to this version?', 'rapidtextai-woocommerce'),
+                'generating' => __('Generating content...', 'ai-content-for-woocommerce'),
+                'error' => __('Error occurred while generating content.', 'ai-content-for-woocommerce'),
+                'success' => __('Content generated successfully!', 'ai-content-for-woocommerce'),
+                'confirm_apply' => __('Are you sure you want to apply this content?', 'ai-content-for-woocommerce'),
+                'confirm_rollback' => __('Are you sure you want to rollback to this version?', 'ai-content-for-woocommerce'),
             )
         ));
     }
@@ -242,7 +235,7 @@ class RTAI_WC_Plugin {
         if (!class_exists('ActionScheduler') && !function_exists('as_schedule_single_action')) {
             add_action('admin_notices', function() {
                 echo '<div class="notice notice-warning"><p>' . 
-                     esc_html__('RapidTextAI for WooCommerce: Action Scheduler not found. Bulk operations will use WordPress cron instead.', 'rapidtextai-woocommerce') . 
+                     esc_html__('RapidTextAI for WooCommerce: Action Scheduler not found. Bulk operations will use WordPress cron instead.', 'ai-content-for-woocommerce') . 
                      '</p></div>';
             });
         }
@@ -260,8 +253,8 @@ class RTAI_WC_Plugin {
      */
     public function add_admin_menu() {
         add_options_page(
-            __('RapidTextAI Settings', 'rapidtextai-woocommerce'),
-            __('RapidTextAI', 'rapidtextai-woocommerce'),
+            __('RapidTextAI Settings', 'ai-content-for-woocommerce'),
+            __('RapidTextAI', 'ai-content-for-woocommerce'),
             'manage_options',
             'rtai-wc-settings',
             array($this, 'render_settings_page')
@@ -281,7 +274,7 @@ class RTAI_WC_Plugin {
     public function add_product_meta_box() {
         add_meta_box(
             'rtai-wc-composer',
-            __('RapidTextAI Composer', 'rapidtextai-woocommerce'),
+            __('RapidTextAI Composer', 'ai-content-for-woocommerce'),
             array($this, 'render_product_meta_box'),
             'product',
             'side',
@@ -315,7 +308,7 @@ class RTAI_WC_Plugin {
      * Add bulk actions
      */
     public function add_bulk_actions($actions) {
-        $actions['rtai_generate_content'] = __('Generate AI Content', 'rapidtextai-woocommerce');
+        $actions['rtai_generate_content'] = __('Generate AI Content', 'ai-content-for-woocommerce');
         return $actions;
     }
     
@@ -336,6 +329,7 @@ class RTAI_WC_Plugin {
         
         $redirect_to = add_query_arg(array(
             'rtai_bulk_started' => 1,
+            'nonce' => wp_create_nonce('rtai_wc_nonce'),
             'batch_id' => $batch_id,
             'count' => count($post_ids)
         ), $redirect_to);
@@ -350,7 +344,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
@@ -384,7 +378,7 @@ class RTAI_WC_Plugin {
         } elseif ($batch_id) {
             $status = RTAI_WC_Jobs::get_instance()->get_batch_status($batch_id);
         } else {
-            wp_send_json_error(__('Invalid job or batch ID.', 'rapidtextai-woocommerce'));
+            wp_send_json_error(__('Invalid job or batch ID.', 'ai-content-for-woocommerce'));
         }
         
         wp_send_json_success($status);
@@ -397,7 +391,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
@@ -419,7 +413,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
@@ -443,7 +437,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
@@ -470,7 +464,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
-            wp_die(__('Insufficient permissions.', 'rapidtextai-woocommerce'));
+            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         try {

@@ -11,129 +11,129 @@ if (!defined('ABSPATH')) {
 <div id="rtai-bulk-modal" class="rtai-modal" style="display: none;">
     <div class="rtai-modal-content">
         <div class="rtai-modal-header">
-            <h3><?php esc_html_e('Bulk AI Content Generation', 'rapidtextai-woocommerce'); ?></h3>
+            <h3><?php esc_html_e('Bulk AI Content Generation', 'ai-content-for-woocommerce'); ?></h3>
             <button type="button" class="rtai-modal-close">&times;</button>
         </div>
         
         <div class="rtai-modal-body">
             <div class="rtai-bulk-step" id="rtai-bulk-setup">
-                <h4><?php esc_html_e('Select Content Types', 'rapidtextai-woocommerce'); ?></h4>
-                <p><?php esc_html_e('Choose what content to generate for the selected products:', 'rapidtextai-woocommerce'); ?></p>
+                <h4><?php esc_html_e('Select Content Types', 'ai-content-for-woocommerce'); ?></h4>
+                <p><?php esc_html_e('Choose what content to generate for the selected products:', 'ai-content-for-woocommerce'); ?></p>
                 
                 <div class="rtai-bulk-artifacts">
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="title" checked>
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('Product Titles', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Generate compelling product titles', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('Product Titles', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Generate compelling product titles', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="short_description" checked>
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('Short Descriptions', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Brief, engaging product summaries', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('Short Descriptions', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Brief, engaging product summaries', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="long_description">
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('Long Descriptions', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Detailed product descriptions', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('Long Descriptions', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Detailed product descriptions', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="seo_title" checked>
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('SEO Titles', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Search engine optimized titles', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('SEO Titles', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Search engine optimized titles', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="seo_description" checked>
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('SEO Meta Descriptions', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Meta descriptions for search results', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('SEO Meta Descriptions', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Meta descriptions for search results', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="bullets">
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('Feature Bullets', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Key feature bullet points', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('Feature Bullets', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Key feature bullet points', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                     
                     <label class="rtai-artifact-option">
                         <input type="checkbox" name="bulk_artifacts[]" value="faq">
                         <div class="rtai-artifact-info">
-                            <strong><?php esc_html_e('FAQ Content', 'rapidtextai-woocommerce'); ?></strong>
-                            <span><?php esc_html_e('Frequently asked questions', 'rapidtextai-woocommerce'); ?></span>
+                            <strong><?php esc_html_e('FAQ Content', 'ai-content-for-woocommerce'); ?></strong>
+                            <span><?php esc_html_e('Frequently asked questions', 'ai-content-for-woocommerce'); ?></span>
                         </div>
                     </label>
                 </div>
                 
                 <div class="rtai-bulk-options">
-                    <h4><?php esc_html_e('Generation Options', 'rapidtextai-woocommerce'); ?></h4>
+                    <h4><?php esc_html_e('Generation Options', 'ai-content-for-woocommerce'); ?></h4>
                     
                     <div class="rtai-option-row">
-                        <label for="bulk-tone"><?php esc_html_e('Tone:', 'rapidtextai-woocommerce'); ?></label>
+                        <label for="bulk-tone"><?php esc_html_e('Tone:', 'ai-content-for-woocommerce'); ?></label>
                         <select id="bulk-tone" name="bulk_tone">
-                            <option value=""><?php esc_html_e('Use default', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="professional"><?php esc_html_e('Professional', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="friendly"><?php esc_html_e('Friendly', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="casual"><?php esc_html_e('Casual', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="luxury"><?php esc_html_e('Luxury', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="technical"><?php esc_html_e('Technical', 'rapidtextai-woocommerce'); ?></option>
-                            <option value="playful"><?php esc_html_e('Playful', 'rapidtextai-woocommerce'); ?></option>
+                            <option value=""><?php esc_html_e('Use default', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="professional"><?php esc_html_e('Professional', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="friendly"><?php esc_html_e('Friendly', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="casual"><?php esc_html_e('Casual', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="luxury"><?php esc_html_e('Luxury', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="technical"><?php esc_html_e('Technical', 'ai-content-for-woocommerce'); ?></option>
+                            <option value="playful"><?php esc_html_e('Playful', 'ai-content-for-woocommerce'); ?></option>
                         </select>
                     </div>
                     
                     <div class="rtai-option-row">
-                        <label for="bulk-audience"><?php esc_html_e('Target Audience:', 'rapidtextai-woocommerce'); ?></label>
+                        <label for="bulk-audience"><?php esc_html_e('Target Audience:', 'ai-content-for-woocommerce'); ?></label>
                         <input type="text" id="bulk-audience" name="bulk_audience" 
-                               placeholder="<?php esc_attr_e('e.g., fitness enthusiasts, professionals', 'rapidtextai-woocommerce'); ?>">
+                               placeholder="<?php esc_attr_e('e.g., fitness enthusiasts, professionals', 'ai-content-for-woocommerce'); ?>">
                     </div>
                     
                     <div class="rtai-option-row">
-                        <label for="bulk-keywords"><?php esc_html_e('Focus Keywords:', 'rapidtextai-woocommerce'); ?></label>
+                        <label for="bulk-keywords"><?php esc_html_e('Focus Keywords:', 'ai-content-for-woocommerce'); ?></label>
                         <input type="text" id="bulk-keywords" name="bulk_keywords" 
-                               placeholder="<?php esc_attr_e('keyword1, keyword2, keyword3', 'rapidtextai-woocommerce'); ?>">
+                               placeholder="<?php esc_attr_e('keyword1, keyword2, keyword3', 'ai-content-for-woocommerce'); ?>">
                     </div>
                     
                     <div class="rtai-option-row">
                         <label>
                             <input type="checkbox" name="bulk_overwrite" value="1">
-                            <?php esc_html_e('Overwrite existing content', 'rapidtextai-woocommerce'); ?>
+                            <?php esc_html_e('Overwrite existing content', 'ai-content-for-woocommerce'); ?>
                         </label>
                         <p class="description">
-                            <?php esc_html_e('If unchecked, only products with empty fields will be processed.', 'rapidtextai-woocommerce'); ?>
+                            <?php esc_html_e('If unchecked, only products with empty fields will be processed.', 'ai-content-for-woocommerce'); ?>
                         </p>
                     </div>
                 </div>
                 
                 <div class="rtai-bulk-summary">
-                    <h4><?php esc_html_e('Summary', 'rapidtextai-woocommerce'); ?></h4>
+                    <h4><?php esc_html_e('Summary', 'ai-content-for-woocommerce'); ?></h4>
                     <div class="rtai-summary-content">
                         <p>
-                            <strong><?php esc_html_e('Products:', 'rapidtextai-woocommerce'); ?></strong> 
+                            <strong><?php esc_html_e('Products:', 'ai-content-for-woocommerce'); ?></strong> 
                             <span id="rtai-selected-count">0</span>
                         </p>
                         <p>
-                            <strong><?php esc_html_e('Content Types:', 'rapidtextai-woocommerce'); ?></strong> 
+                            <strong><?php esc_html_e('Content Types:', 'ai-content-for-woocommerce'); ?></strong> 
                             <span id="rtai-artifact-count">0</span>
                         </p>
                         <p>
-                            <strong><?php esc_html_e('Estimated Jobs:', 'rapidtextai-woocommerce'); ?></strong> 
+                            <strong><?php esc_html_e('Estimated Jobs:', 'ai-content-for-woocommerce'); ?></strong> 
                             <span id="rtai-job-count">0</span>
                         </p>
                         <p class="rtai-cost-estimate">
-                            <strong><?php esc_html_e('Estimated Cost:', 'rapidtextai-woocommerce'); ?></strong> 
+                            <strong><?php esc_html_e('Estimated Cost:', 'ai-content-for-woocommerce'); ?></strong> 
                             <span id="rtai-cost-estimate">$0.00</span>
                         </p>
                     </div>
@@ -141,7 +141,7 @@ if (!defined('ABSPATH')) {
             </div>
             
             <div class="rtai-bulk-step" id="rtai-bulk-progress" style="display: none;">
-                <h4><?php esc_html_e('Generation in Progress', 'rapidtextai-woocommerce'); ?></h4>
+                <h4><?php esc_html_e('Generation in Progress', 'ai-content-for-woocommerce'); ?></h4>
                 <div class="rtai-progress-container">
                     <div class="rtai-progress-bar">
                         <div class="rtai-progress-fill" style="width: 0%;"></div>
@@ -149,76 +149,76 @@ if (!defined('ABSPATH')) {
                     <div class="rtai-progress-text">
                         <span id="rtai-progress-current">0</span> / 
                         <span id="rtai-progress-total">0</span> 
-                        <?php esc_html_e('jobs completed', 'rapidtextai-woocommerce'); ?>
+                        <?php esc_html_e('jobs completed', 'ai-content-for-woocommerce'); ?>
                     </div>
                 </div>
                 
                 <div class="rtai-progress-details">
                     <div class="rtai-status-counts">
                         <div class="rtai-status-item">
-                            <span class="rtai-status-label"><?php esc_html_e('Queued:', 'rapidtextai-woocommerce'); ?></span>
+                            <span class="rtai-status-label"><?php esc_html_e('Queued:', 'ai-content-for-woocommerce'); ?></span>
                             <span class="rtai-status-count" id="rtai-queued-count">0</span>
                         </div>
                         <div class="rtai-status-item">
-                            <span class="rtai-status-label"><?php esc_html_e('Running:', 'rapidtextai-woocommerce'); ?></span>
+                            <span class="rtai-status-label"><?php esc_html_e('Running:', 'ai-content-for-woocommerce'); ?></span>
                             <span class="rtai-status-count" id="rtai-running-count">0</span>
                         </div>
                         <div class="rtai-status-item">
-                            <span class="rtai-status-label"><?php esc_html_e('Completed:', 'rapidtextai-woocommerce'); ?></span>
+                            <span class="rtai-status-label"><?php esc_html_e('Completed:', 'ai-content-for-woocommerce'); ?></span>
                             <span class="rtai-status-count" id="rtai-success-count">0</span>
                         </div>
                         <div class="rtai-status-item">
-                            <span class="rtai-status-label"><?php esc_html_e('Failed:', 'rapidtextai-woocommerce'); ?></span>
+                            <span class="rtai-status-label"><?php esc_html_e('Failed:', 'ai-content-for-woocommerce'); ?></span>
                             <span class="rtai-status-count" id="rtai-failed-count">0</span>
                         </div>
                     </div>
                     
                     <div class="rtai-current-job">
-                        <p><?php esc_html_e('Current:', 'rapidtextai-woocommerce'); ?> <span id="rtai-current-job"></span></p>
+                        <p><?php esc_html_e('Current:', 'ai-content-for-woocommerce'); ?> <span id="rtai-current-job"></span></p>
                     </div>
                 </div>
                 
                 <div class="rtai-progress-actions">
                     <button type="button" class="button" id="rtai-pause-bulk">
-                        <?php esc_html_e('Pause', 'rapidtextai-woocommerce'); ?>
+                        <?php esc_html_e('Pause', 'ai-content-for-woocommerce'); ?>
                     </button>
                     <button type="button" class="button" id="rtai-cancel-bulk">
-                        <?php esc_html_e('Cancel All', 'rapidtextai-woocommerce'); ?>
+                        <?php esc_html_e('Cancel All', 'ai-content-for-woocommerce'); ?>
                     </button>
                 </div>
             </div>
             
             <div class="rtai-bulk-step" id="rtai-bulk-complete" style="display: none;">
-                <h4><?php esc_html_e('Generation Complete', 'rapidtextai-woocommerce'); ?></h4>
+                <h4><?php esc_html_e('Generation Complete', 'ai-content-for-woocommerce'); ?></h4>
                 
                 <div class="rtai-completion-summary">
                     <div class="rtai-summary-stats">
                         <div class="rtai-stat-item success">
                             <div class="rtai-stat-number" id="rtai-final-success">0</div>
-                            <div class="rtai-stat-label"><?php esc_html_e('Successful', 'rapidtextai-woocommerce'); ?></div>
+                            <div class="rtai-stat-label"><?php esc_html_e('Successful', 'ai-content-for-woocommerce'); ?></div>
                         </div>
                         <div class="rtai-stat-item failed">
                             <div class="rtai-stat-number" id="rtai-final-failed">0</div>
-                            <div class="rtai-stat-label"><?php esc_html_e('Failed', 'rapidtextai-woocommerce'); ?></div>
+                            <div class="rtai-stat-label"><?php esc_html_e('Failed', 'ai-content-for-woocommerce'); ?></div>
                         </div>
                         <div class="rtai-stat-item total">
                             <div class="rtai-stat-number" id="rtai-final-total">0</div>
-                            <div class="rtai-stat-label"><?php esc_html_e('Total Jobs', 'rapidtextai-woocommerce'); ?></div>
+                            <div class="rtai-stat-label"><?php esc_html_e('Total Jobs', 'ai-content-for-woocommerce'); ?></div>
                         </div>
                     </div>
                     
                     <div class="rtai-completion-actions">
                         <button type="button" class="button button-primary" id="rtai-view-results">
-                            <?php esc_html_e('View Generated Products', 'rapidtextai-woocommerce'); ?>
+                            <?php esc_html_e('View Generated Products', 'ai-content-for-woocommerce'); ?>
                         </button>
                         <button type="button" class="button" id="rtai-download-report">
-                            <?php esc_html_e('Download Report', 'rapidtextai-woocommerce'); ?>
+                            <?php esc_html_e('Download Report', 'ai-content-for-woocommerce'); ?>
                         </button>
                     </div>
                 </div>
                 
                 <div class="rtai-failed-jobs" id="rtai-failed-jobs" style="display: none;">
-                    <h5><?php esc_html_e('Failed Jobs', 'rapidtextai-woocommerce'); ?></h5>
+                    <h5><?php esc_html_e('Failed Jobs', 'ai-content-for-woocommerce'); ?></h5>
                     <div class="rtai-failed-list"></div>
                 </div>
             </div>
@@ -227,22 +227,22 @@ if (!defined('ABSPATH')) {
         <div class="rtai-modal-footer">
             <div class="rtai-footer-step" id="rtai-footer-setup">
                 <button type="button" class="button button-primary" id="rtai-start-bulk">
-                    <?php esc_html_e('Start Generation', 'rapidtextai-woocommerce'); ?>
+                    <?php esc_html_e('Start Generation', 'ai-content-for-woocommerce'); ?>
                 </button>
                 <button type="button" class="button rtai-modal-close">
-                    <?php esc_html_e('Cancel', 'rapidtextai-woocommerce'); ?>
+                    <?php esc_html_e('Cancel', 'ai-content-for-woocommerce'); ?>
                 </button>
             </div>
             
             <div class="rtai-footer-step" id="rtai-footer-progress" style="display: none;">
                 <p class="rtai-progress-note">
-                    <?php esc_html_e('Generation is running in the background. You can close this window and continue working.', 'rapidtextai-woocommerce'); ?>
+                    <?php esc_html_e('Generation is running in the background. You can close this window and continue working.', 'ai-content-for-woocommerce'); ?>
                 </p>
             </div>
             
             <div class="rtai-footer-step" id="rtai-footer-complete" style="display: none;">
                 <button type="button" class="button button-primary rtai-modal-close">
-                    <?php esc_html_e('Close', 'rapidtextai-woocommerce'); ?>
+                    <?php esc_html_e('Close', 'ai-content-for-woocommerce'); ?>
                 </button>
             </div>
         </div>
@@ -311,7 +311,7 @@ jQuery(document).ready(function($) {
             });
             
             if (selectedArtifacts.length === 0) {
-                alert('<?php esc_html_e('Please select at least one content type.', 'rapidtextai-woocommerce'); ?>');
+                alert('<?php esc_html_e('Please select at least one content type.', 'ai-content-for-woocommerce'); ?>');
                 return;
             }
             
@@ -333,7 +333,7 @@ jQuery(document).ready(function($) {
                 type: 'POST',
                 data: requestData,
                 beforeSend: function() {
-                    $('#rtai-start-bulk').prop('disabled', true).text('<?php esc_html_e('Starting...', 'rapidtextai-woocommerce'); ?>');
+                    $('#rtai-start-bulk').prop('disabled', true).text('<?php esc_html_e('Starting...', 'ai-content-for-woocommerce'); ?>');
                 },
                 success: function(response) {
                     if (response.success) {
@@ -341,13 +341,13 @@ jQuery(document).ready(function($) {
                         self.showProgress();
                         self.startPolling();
                     } else {
-                        alert('<?php esc_html_e('Failed to start generation:', 'rapidtextai-woocommerce'); ?> ' + response.data);
-                        $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
+                        alert('<?php esc_html_e('Failed to start generation:', 'ai-content-for-woocommerce'); ?> ' + response.data);
+                        $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'ai-content-for-woocommerce'); ?>');
                     }
                 },
                 error: function() {
-                    alert('<?php esc_html_e('Error starting generation. Please try again.', 'rapidtextai-woocommerce'); ?>');
-                    $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'rapidtextai-woocommerce'); ?>');
+                    alert('<?php esc_html_e('Error starting generation. Please try again.', 'ai-content-for-woocommerce'); ?>');
+                    $('#rtai-start-bulk').prop('disabled', false).text('<?php esc_html_e('Start Generation', 'ai-content-for-woocommerce'); ?>');
                 }
             });
         },
@@ -424,7 +424,7 @@ jQuery(document).ready(function($) {
         cancelGeneration: function() {
             var self = this;
             
-            if (!confirm('<?php esc_html_e('Are you sure you want to cancel the generation?', 'rapidtextai-woocommerce'); ?>')) {
+            if (!confirm('<?php esc_html_e('Are you sure you want to cancel the generation?', 'ai-content-for-woocommerce'); ?>')) {
                 return;
             }
             

@@ -59,7 +59,7 @@ class RTAI_WC_API_Client {
      */
     public function test_connection() {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $response = $this->make_request('auth/test', array(), 'GET');
@@ -116,7 +116,7 @@ class RTAI_WC_API_Client {
      */
     public function generate_sync($artifact, $context, $model_profile = null) {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $settings = get_option('rtai_wc_settings', array());
@@ -163,7 +163,7 @@ class RTAI_WC_API_Client {
      */
     public function generate($artifact, $context, $model_profile = null) {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $settings = get_option('rtai_wc_settings', array());
@@ -363,7 +363,7 @@ class RTAI_WC_API_Client {
      */
     private function transform_completion_response($response, $artifact) {
         if (empty($response['choices']) || !isset($response['choices'][0]['message']['content'])) {
-            throw new Exception(__('Invalid response format from API.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('Invalid response format from API.', 'ai-content-for-woocommerce'));
         }
         
         $content = trim($response['choices'][0]['message']['content']);
@@ -411,7 +411,7 @@ class RTAI_WC_API_Client {
         $headers = array(
             'Authorization' => 'Bearer ' . $this->api_key,
             'Content-Type' => 'application/json',
-            'User-Agent' => 'RapidTextAI-WooCommerce/' . RTAI_WC_VERSION,
+            'User-Agent' => 'ai-content-for-woocommerce/' . RTAI_WC_VERSION,
         );
         
         // Add streaming headers
@@ -459,18 +459,18 @@ class RTAI_WC_API_Client {
             // Handle specific error codes
             switch ($response_code) {
                 case 401:
-                    $error_message = __('Invalid API key. Please check your RapidTextAI credentials.', 'rapidtextai-woocommerce');
+                    $error_message = __('Invalid API key. Please check your RapidTextAI credentials.', 'ai-content-for-woocommerce');
                     break;
                 case 429:
-                    $error_message = __('Rate limit exceeded. Please wait a moment and try again.', 'rapidtextai-woocommerce');
+                    $error_message = __('Rate limit exceeded. Please wait a moment and try again.', 'ai-content-for-woocommerce');
                     break;
                 case 402:
-                    $error_message = __('Quota exceeded. Please upgrade your RapidTextAI plan.', 'rapidtextai-woocommerce');
+                    $error_message = __('Quota exceeded. Please upgrade your RapidTextAI plan.', 'ai-content-for-woocommerce');
                     break;
                 case 500:
                 case 502:
                 case 503:
-                    $error_message = __('RapidTextAI service temporarily unavailable. Please try again later.', 'rapidtextai-woocommerce');
+                    $error_message = __('RapidTextAI service temporarily unavailable. Please try again later.', 'ai-content-for-woocommerce');
                     break;
             }
             
@@ -483,7 +483,7 @@ class RTAI_WC_API_Client {
         $decoded_response = json_decode($response_body, true);
         
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return new WP_Error('rtai_json_error', __('Invalid JSON response from API.', 'rapidtextai-woocommerce'));
+            return new WP_Error('rtai_json_error', __('Invalid JSON response from API.', 'ai-content-for-woocommerce'));
         }
         
         return $decoded_response;

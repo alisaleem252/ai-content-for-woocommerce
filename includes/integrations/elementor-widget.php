@@ -14,7 +14,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
     }
     
     public function get_title() {
-        return __('RapidTextAI Content', 'rapidtextai-woocommerce');
+        return __('RapidTextAI Content', 'ai-content-for-woocommerce');
     }
     
     public function get_icon() {
@@ -34,7 +34,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('AI Content Settings', 'rapidtextai-woocommerce'),
+                'label' => __('AI Content Settings', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -42,15 +42,15 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'content_type',
             [
-                'label' => __('Content Type', 'rapidtextai-woocommerce'),
+                'label' => __('Content Type', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => 'title',
                 'options' => [
-                    'title' => __('Product Title', 'rapidtextai-woocommerce'),
-                    'short_description' => __('Short Description', 'rapidtextai-woocommerce'),
-                    'long_description' => __('Long Description', 'rapidtextai-woocommerce'),
-                    'bullets' => __('Feature Bullets', 'rapidtextai-woocommerce'),
-                    'faq' => __('FAQ Content', 'rapidtextai-woocommerce'),
+                    'title' => __('Product Title', 'ai-content-for-woocommerce'),
+                    'short_description' => __('Short Description', 'ai-content-for-woocommerce'),
+                    'long_description' => __('Long Description', 'ai-content-for-woocommerce'),
+                    'bullets' => __('Feature Bullets', 'ai-content-for-woocommerce'),
+                    'faq' => __('FAQ Content', 'ai-content-for-woocommerce'),
                 ],
             ]
         );
@@ -58,30 +58,30 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'product_id',
             [
-                'label' => __('Product ID', 'rapidtextai-woocommerce'),
+                'label' => __('Product ID', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0,
-                'description' => __('Leave empty to use current product', 'rapidtextai-woocommerce'),
+                'description' => __('Leave empty to use current product', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'auto_generate',
             [
-                'label' => __('Auto Generate', 'rapidtextai-woocommerce'),
+                'label' => __('Auto Generate', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'no',
-                'description' => __('Automatically generate content if empty', 'rapidtextai-woocommerce'),
+                'description' => __('Automatically generate content if empty', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'show_generate_button',
             [
-                'label' => __('Show Generate Button', 'rapidtextai-woocommerce'),
+                'label' => __('Show Generate Button', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'yes',
-                'description' => __('Show button to generate new content', 'rapidtextai-woocommerce'),
+                'description' => __('Show button to generate new content', 'ai-content-for-woocommerce'),
             ]
         );
         
@@ -90,7 +90,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'generation_section',
             [
-                'label' => __('Generation Options', 'rapidtextai-woocommerce'),
+                'label' => __('Generation Options', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -98,17 +98,17 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'tone',
             [
-                'label' => __('Tone', 'rapidtextai-woocommerce'),
+                'label' => __('Tone', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                    '' => __('Use Default', 'rapidtextai-woocommerce'),
-                    'professional' => __('Professional', 'rapidtextai-woocommerce'),
-                    'friendly' => __('Friendly', 'rapidtextai-woocommerce'),
-                    'casual' => __('Casual', 'rapidtextai-woocommerce'),
-                    'luxury' => __('Luxury', 'rapidtextai-woocommerce'),
-                    'technical' => __('Technical', 'rapidtextai-woocommerce'),
-                    'playful' => __('Playful', 'rapidtextai-woocommerce'),
+                    '' => __('Use Default', 'ai-content-for-woocommerce'),
+                    'professional' => __('Professional', 'ai-content-for-woocommerce'),
+                    'friendly' => __('Friendly', 'ai-content-for-woocommerce'),
+                    'casual' => __('Casual', 'ai-content-for-woocommerce'),
+                    'luxury' => __('Luxury', 'ai-content-for-woocommerce'),
+                    'technical' => __('Technical', 'ai-content-for-woocommerce'),
+                    'playful' => __('Playful', 'ai-content-for-woocommerce'),
                 ],
             ]
         );
@@ -116,18 +116,18 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'audience',
             [
-                'label' => __('Target Audience', 'rapidtextai-woocommerce'),
+                'label' => __('Target Audience', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __('e.g., fitness enthusiasts, professionals', 'rapidtextai-woocommerce'),
+                'placeholder' => __('e.g., fitness enthusiasts, professionals', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'keywords',
             [
-                'label' => __('Keywords', 'rapidtextai-woocommerce'),
+                'label' => __('Keywords', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __('keyword1, keyword2, keyword3', 'rapidtextai-woocommerce'),
+                'placeholder' => __('keyword1, keyword2, keyword3', 'ai-content-for-woocommerce'),
             ]
         );
         
@@ -136,7 +136,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'style_section',
             [
-                'label' => __('Style', 'rapidtextai-woocommerce'),
+                'label' => __('Style', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
@@ -152,7 +152,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'content_color',
             [
-                'label' => __('Text Color', 'rapidtextai-woocommerce'),
+                'label' => __('Text Color', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .rtai-elementor-content' => 'color: {{VALUE}};',
@@ -163,23 +163,23 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_responsive_control(
             'content_align',
             [
-                'label' => __('Alignment', 'rapidtextai-woocommerce'),
+                'label' => __('Alignment', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', 'rapidtextai-woocommerce'),
+                        'title' => __('Left', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', 'rapidtextai-woocommerce'),
+                        'title' => __('Center', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', 'rapidtextai-woocommerce'),
+                        'title' => __('Right', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
-                        'title' => __('Justified', 'rapidtextai-woocommerce'),
+                        'title' => __('Justified', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-justify',
                     ],
                 ],
@@ -208,8 +208,8 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         if (empty($product_id)) {
             if (\Elementor\Plugin::$instance->editor->is_edit_mode()) {
                 echo '<div class="rtai-elementor-placeholder">';
-                echo '<p>' . __('RapidTextAI Content Widget', 'rapidtextai-woocommerce') . '</p>';
-                echo '<p>' . __('This widget will display AI-generated content for the current product.', 'rapidtextai-woocommerce') . '</p>';
+                echo '<p>' . __('RapidTextAI Content Widget', 'ai-content-for-woocommerce') . '</p>';
+                echo '<p>' . __('This widget will display AI-generated content for the current product.', 'ai-content-for-woocommerce') . '</p>';
                 echo '</div>';
             }
             return;
@@ -236,14 +236,14 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
             echo '</div>';
         } else {
             echo '<div class="rtai-elementor-placeholder">';
-            echo '<p>' . __('No content available. Generate content to see it here.', 'rapidtextai-woocommerce') . '</p>';
+            echo '<p>' . __('No content available. Generate content to see it here.', 'ai-content-for-woocommerce') . '</p>';
             echo '</div>';
         }
         
         if ($settings['show_generate_button'] === 'yes') {
             echo '<div class="rtai-elementor-actions">';
             echo '<button type="button" class="rtai-elementor-generate" data-settings="' . esc_attr(json_encode($settings)) . '">';
-            echo __('Generate Content', 'rapidtextai-woocommerce');
+            echo __('Generate Content', 'ai-content-for-woocommerce');
             echo '</button>';
             echo '</div>';
         }

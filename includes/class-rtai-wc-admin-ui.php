@@ -44,16 +44,16 @@ class RTAI_WC_Admin_UI {
      */
     public function handle_save_api_key_ajax() {
         // Check nonce
-        if (!wp_verify_nonce($_POST['_wpnonce'] ?? '', 'rtai_wc_save_api_key_nonce')) {
-            wp_send_json_error(array('message' => __('Security check failed.', 'rapidtextai-woocommerce')));
+        if (!wp_verify_nonce(wp_unslash($_POST['_wpnonce'] ?? ''), 'rtai_wc_save_api_key_nonce')) {
+            wp_send_json_error(array('message' => __('Security check failed.', 'ai-content-for-woocommerce')));
             return;
         }
         
         // Get and sanitize API key
-        $api_key = sanitize_text_field($_POST['api_key'] ?? '');
+        $api_key = sanitize_text_field(wp_unslash($_POST['api_key'] ?? ''));
         
         if (empty($api_key)) {
-            wp_send_json_error(array('message' => __('API key is required.', 'rapidtextai-woocommerce')));
+            wp_send_json_error(array('message' => __('API key is required.', 'ai-content-for-woocommerce')));
             return;
         }
         
@@ -71,12 +71,12 @@ class RTAI_WC_Admin_UI {
         try {
             $connection_test = RTAI_WC_API_Client::get_instance()->test_connection();
             if ($connection_test['success']) {
-                wp_send_json_success(array('message' => __('API key saved and connection verified successfully!', 'rapidtextai-woocommerce')));
+                wp_send_json_success(array('message' => __('API key saved and connection verified successfully!', 'ai-content-for-woocommerce')));
             } else {
-                wp_send_json_error(array('message' => __('API key saved but connection test failed.', 'rapidtextai-woocommerce')));
+                wp_send_json_error(array('message' => __('API key saved but connection test failed.', 'ai-content-for-woocommerce')));
             }
         } catch (Exception $e) {
-            wp_send_json_error(array('message' => sprintf(__('API key saved but connection test failed: %s', 'rapidtextai-woocommerce'), $e->getMessage())));
+            wp_send_json_error(array('message' => sprintf(__('API key saved but connection test failed: %s', 'ai-content-for-woocommerce'), $e->getMessage())));
         }
     }
     /**
@@ -88,6 +88,15 @@ class RTAI_WC_Admin_UI {
             $this->show_connection_notice();
         }
         
+        // Show nonce validation notice
+        if (isset($_GET['nonce'])) {
+            if (!wp_verify_nonce($_GET['nonce'], 'rtai_wc_nonce')) {
+                echo '<div class="notice notice-error is-dismissible">';
+                echo '<p>' . esc_html__('Security check failed.', 'ai-content-for-woocommerce') . '</p>';
+                echo '</div>';
+                return;
+            }
+        }
         // Show bulk operation results
         if (isset($_GET['rtai_bulk_started'])) {
             $count = intval($_GET['count'] ?? 0);
@@ -95,7 +104,7 @@ class RTAI_WC_Admin_UI {
             
             echo '<div class="notice notice-info is-dismissible">';
             echo '<p>' . sprintf(
-                esc_html__('AI content generation started for %d products. Batch ID: %s', 'rapidtextai-woocommerce'),
+                esc_html__('AI content generation started for %d products. Batch ID: %s', 'ai-content-for-woocommerce'),
                 $count,
                 esc_html($batch_id)
             ) . '</p>';
@@ -111,7 +120,7 @@ class RTAI_WC_Admin_UI {
         
         echo '<div class="notice notice-warning">';
         echo '<p>' . sprintf(
-            esc_html__('RapidTextAI for WooCommerce is not connected. %sConnect now%s to start generating AI content.', 'rapidtextai-woocommerce'),
+            esc_html__('RapidTextAI for WooCommerce is not connected. %sConnect now%s to start generating AI content.', 'ai-content-for-woocommerce'),
             '<a href="' . esc_url($settings_url) . '">',
             '</a>'
         ) . '</p>';
@@ -184,7 +193,7 @@ class RTAI_WC_Admin_UI {
         // Update API client
         RTAI_WC_API_Client::get_instance()->set_api_key($settings['api_key']);
         
-        add_settings_error('rtai_wc_settings', 'settings_updated', __('Settings saved successfully.', 'rapidtextai-woocommerce'), 'updated');
+        add_settings_error('rtai_wc_settings', 'settings_updated', __('Settings saved successfully.', 'ai-content-for-woocommerce'), 'updated');
     }
     
     /**
@@ -257,14 +266,14 @@ class RTAI_WC_Admin_UI {
      */
     public function get_tone_options() {
         return array(
-            'professional' => __('Professional', 'rapidtextai-woocommerce'),
-            'friendly' => __('Friendly', 'rapidtextai-woocommerce'),
-            'casual' => __('Casual', 'rapidtextai-woocommerce'),
-            'luxury' => __('Luxury', 'rapidtextai-woocommerce'),
-            'technical' => __('Technical', 'rapidtextai-woocommerce'),
-            'playful' => __('Playful', 'rapidtextai-woocommerce'),
-            'persuasive' => __('Persuasive', 'rapidtextai-woocommerce'),
-            'informative' => __('Informative', 'rapidtextai-woocommerce'),
+            'professional' => __('Professional', 'ai-content-for-woocommerce'),
+            'friendly' => __('Friendly', 'ai-content-for-woocommerce'),
+            'casual' => __('Casual', 'ai-content-for-woocommerce'),
+            'luxury' => __('Luxury', 'ai-content-for-woocommerce'),
+            'technical' => __('Technical', 'ai-content-for-woocommerce'),
+            'playful' => __('Playful', 'ai-content-for-woocommerce'),
+            'persuasive' => __('Persuasive', 'ai-content-for-woocommerce'),
+            'informative' => __('Informative', 'ai-content-for-woocommerce'),
         );
     }
     

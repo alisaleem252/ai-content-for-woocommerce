@@ -90,9 +90,9 @@ class RTAI_WC_Integrations {
         }
         
         echo '<div class="rtai-yoast-integration">';
-        echo '<p><strong>' . esc_html__('RapidTextAI', 'rapidtextai-woocommerce') . '</strong></p>';
+        echo '<p><strong>' . esc_html__('RapidTextAI', 'ai-content-for-woocommerce') . '</strong></p>';
         echo '<button type="button" class="button rtai-generate-seo" data-post-id="' . esc_attr($post->ID) . '">';
-        echo esc_html__('Generate SEO Content', 'rapidtextai-woocommerce');
+        echo esc_html__('Generate SEO Content', 'ai-content-for-woocommerce');
         echo '</button>';
         echo '</div>';
     }
@@ -134,9 +134,9 @@ class RTAI_WC_Integrations {
         }
         
         echo '<div class="rtai-rankmath-integration">';
-        echo '<h4>' . esc_html__('RapidTextAI', 'rapidtextai-woocommerce') . '</h4>';
+        echo '<h4>' . esc_html__('RapidTextAI', 'ai-content-for-woocommerce') . '</h4>';
         echo '<button type="button" class="button rtai-generate-seo" data-post-id="' . esc_attr($post->ID) . '">';
-        echo esc_html__('Generate SEO Content', 'rapidtextai-woocommerce');
+        echo esc_html__('Generate SEO Content', 'ai-content-for-woocommerce');
         echo '</button>';
         echo '</div>';
     }

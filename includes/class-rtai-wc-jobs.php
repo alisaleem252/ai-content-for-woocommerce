@@ -48,7 +48,7 @@ class RTAI_WC_Jobs {
      */
     public function queue_bulk_generation($post_ids, $artifacts = null, $context_overrides = array()) {
         if (empty($post_ids)) {
-            throw new Exception(__('No products selected.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('No products selected.', 'ai-content-for-woocommerce'));
         }
         
         // Default artifacts for bulk operations
@@ -76,7 +76,7 @@ class RTAI_WC_Jobs {
         }
         
         if (empty($job_ids)) {
-            throw new Exception(__('No valid jobs could be created.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('No valid jobs could be created.', 'ai-content-for-woocommerce'));
         }
         
         // Start processing
@@ -95,7 +95,7 @@ class RTAI_WC_Jobs {
         
         // Check for duplicate job
         $existing = $wpdb->get_var($wpdb->prepare(
-            "SELECT id FROM $table_name 
+            "SELECT id FROM {$wpdb->prefix}rtai_jobs 
              WHERE post_id = %d AND artifact = %s AND status IN ('queued', 'running') 
              ORDER BY created_at DESC LIMIT 1",
             $post_id,
@@ -127,7 +127,7 @@ class RTAI_WC_Jobs {
         );
         
         if ($result === false) {
-            throw new Exception(__('Failed to queue job.', 'rapidtextai-woocommerce'));
+            throw new Exception(__('Failed to queue job.', 'ai-content-for-woocommerce'));
         }
         
         $job_id = $wpdb->insert_id;
@@ -179,7 +179,7 @@ class RTAI_WC_Jobs {
         $table_name = $wpdb->prefix . 'rtai_jobs';
         
         $jobs = $wpdb->get_results($wpdb->prepare(
-            "SELECT id FROM $table_name 
+            "SELECT id FROM {$wpdb->prefix}rtai_jobs 
              WHERE batch_id = %s AND status = %s 
              ORDER BY created_at ASC LIMIT %d",
             $batch_id,
@@ -202,7 +202,7 @@ class RTAI_WC_Jobs {
         
         // Get job details
         $job = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE id = %d",
+            "SELECT * FROM {$wpdb->prefix}rtai_jobs WHERE id = %d",
             $job_id
         ));
         
@@ -284,7 +284,7 @@ class RTAI_WC_Jobs {
         $table_name = $wpdb->prefix . 'rtai_jobs';
         
         $job = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE id = %d",
+            "SELECT * FROM {$wpdb->prefix}rtai_jobs WHERE id = %d",
             $job_id
         ));
         
@@ -339,7 +339,7 @@ class RTAI_WC_Jobs {
         $table_name = $wpdb->prefix . 'rtai_jobs';
         
         $job = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE id = %d",
+            "SELECT * FROM {$wpdb->prefix}rtai_jobs WHERE id = %d",
             $job_id
         ));
         
@@ -369,7 +369,7 @@ class RTAI_WC_Jobs {
         $table_name = $wpdb->prefix . 'rtai_jobs';
         
         $stats = $wpdb->get_results($wpdb->prepare(
-            "SELECT status, COUNT(*) as count FROM $table_name 
+            "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}rtai_jobs
              WHERE batch_id = %s GROUP BY status",
             $batch_id
         ));
@@ -439,7 +439,7 @@ class RTAI_WC_Jobs {
         
         // Delete jobs older than 30 days
         $wpdb->query($wpdb->prepare(
-            "DELETE FROM $table_name WHERE created_at < %s",
+            "DELETE FROM {$wpdb->prefix}rtai_jobs WHERE created_at < %s",
             date('Y-m-d H:i:s', strtotime('-30 days'))
         ));
     }
@@ -452,21 +452,20 @@ class RTAI_WC_Jobs {
         
         $table_name = $wpdb->prefix . 'rtai_jobs';
         
-        $where = '';
-        $args = array();
-        
         if ($user_id) {
-            $where = 'WHERE user_id = %d';
-            $args[] = $user_id;
-        }
-        
-        $args[] = $limit;
-        
-        return $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name $where 
+            return $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}rtai_jobs WHERE user_id = %d 
              ORDER BY created_at DESC LIMIT %d",
-            ...$args
-        ));
+            $user_id,
+            $limit
+            ));
+        } else {
+            return $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$wpdb->prefix}rtai_jobs 
+             ORDER BY created_at DESC LIMIT %d",
+            $limit
+            ));
+        }
     }
     
     /**
@@ -484,7 +483,7 @@ class RTAI_WC_Jobs {
                 SUM(CASE WHEN status = 'success' THEN 1 ELSE 0 END) as successful_jobs,
                 SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed_jobs,
                 SUM(tokens) as total_tokens
-             FROM $table_name 
+             FROM {$wpdb->prefix}rtai_jobs 
              WHERE created_at >= %s 
              GROUP BY DATE(created_at) 
              ORDER BY date DESC",

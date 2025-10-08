@@ -1,22 +1,20 @@
 <?php
 /**
- * Plugin Name: AI Content for WooCommerce by RapidTextAI
+ * Plugin Name: RapidText AI Content for WooCommerce
  * Plugin URI: https://rapidtext.ai/woocommerce
- * Description: Generate AI-powered content for WooCommerce products with 1-click automation. Create titles, descriptions, SEO meta, FAQs, and translations using RapidTextAI's advanced models.
+ * Description: Generate AI-powered content for WooCommerce products with 1-click automation. Create titles, descriptions, SEO meta, FAQs, and translations using RapidText AI's advanced models.
  * Version: 1.0.0
  * Author: RapidTextAI
  * Author URI: https://app.rapidtextai.com
- * License: GPL v2 or later
+ * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: rapidtextai-woocommerce
- * Domain Path: /languages
+ * Text Domain: ai-content-for-woocommerce
  * Requires Plugins: woocommerce
  * Requires at least: 5.0
  * Tested up to: 6.5
  * Requires PHP: 7.4
  * WC requires at least: 5.0
  * WC tested up to: 8.5
- * Network: false
  */
 
 // Prevent direct access
@@ -35,7 +33,7 @@ define('RTAI_WC_PLUGIN_BASENAME', plugin_basename(__FILE__));
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
     add_action('admin_notices', function() {
         echo '<div class="notice notice-error"><p>' . 
-             esc_html__('RapidTextAI for WooCommerce requires WooCommerce to be installed and activated.', 'rapidtextai-woocommerce') . 
+             esc_html__('RapidTextAI for WooCommerce requires WooCommerce to be installed and activated.', 'ai-content-for-woocommerce') . 
              '</p></div>';
     });
     return;
