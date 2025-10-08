@@ -1,4 +1,4 @@
-# RapidTextAI for WooCommerce
+# AI Content for WooCommerce by RapidTextAI
 
 A comprehensive WooCommerce extension that integrates with RapidTextAI to generate high-quality product content using advanced AI models. Create compelling product titles, descriptions, SEO meta data, FAQs, and more with just a few clicks.
 
