@@ -182,10 +182,7 @@
                                     
                                     if (data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content) {
                                         var content = data.choices[0].delta.content;
-                                        // Convert markdown content to HTML if marked library is available
-                                        if (typeof marked !== 'undefined') {
-                                            content = marked.parse(content);
-                                        }
+                                        
                                         fullContent += content;
                                         // Update the preview in real-time
                                         var $preview = $content.find('.rtai-stream-preview');
@@ -489,6 +486,13 @@
                     
                 case 'description':
                 case 'long_description':
+
+                                        
+                                        
+                    // Convert markdown content to HTML if marked library is available
+                    if (typeof marked !== 'undefined') {
+                        content = marked.parse(content);
+                    }
                     // Update main content editor
                     if (typeof wp !== 'undefined' && wp.data && wp.data.dispatch && wp.data.dispatch('core/editor') !== null) {
                         // Gutenberg editor
@@ -502,6 +506,11 @@
                     break;
                     
                 case 'short_description':
+
+                    // Convert markdown content to HTML if marked library is available
+                    if (typeof marked !== 'undefined') {
+                        content = marked.parse(content);
+                    }
                     // Update excerpt/short description
                     if (typeof wp !== 'undefined' && wp.data && wp.data.dispatch && wp.data.dispatch('core/editor') !== null) {
                         // Gutenberg editor

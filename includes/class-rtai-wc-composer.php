@@ -47,13 +47,13 @@ class RTAI_WC_Composer {
     public function generate_content($post_id, $artifacts, $context_overrides = array()) {
         $product = wc_get_product($post_id);
         if (!$product) {
-            throw new Exception(__('Product not found.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('Product not found.', 'ai-content-for-woocommerce'));
         }
         
         // Validate artifacts
         $artifacts = array_intersect($artifacts, self::SUPPORTED_ARTIFACTS);
         if (empty($artifacts)) {
-            throw new Exception(__('No valid artifacts specified.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('No valid artifacts specified.', 'ai-content-for-woocommerce'));
         }
         
         $results = array();
@@ -95,7 +95,7 @@ class RTAI_WC_Composer {
     public function build_context($product, $artifact, $overrides = array()) {
         $product = wc_get_product($product);
         if (!$product) {
-            throw new Exception(__('Product not found.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('Product not found.', 'ai-content-for-woocommerce'));
         }
         $context = array(
             'product_name' => $product->get_name(),
@@ -220,13 +220,13 @@ class RTAI_WC_Composer {
     public function apply_content($post_id, $artifact, $content) {
         $product = wc_get_product($post_id);
         if (!$product) {
-            throw new Exception(__('Product not found.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('Product not found.', 'ai-content-for-woocommerce'));
         }
         
         // Check if field is locked
         $flags = get_post_meta($post_id, '_rtai_flags', true) ?: array();
         if (!empty($flags['locked'][$artifact])) {
-            throw new Exception(__('This field is locked from AI updates.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('This field is locked from AI updates.', 'ai-content-for-woocommerce'));
         }
         
         switch ($artifact) {
@@ -372,7 +372,7 @@ class RTAI_WC_Composer {
         }
         
         if (!$entry) {
-            throw new Exception(__('History entry not found.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('History entry not found.', 'ai-content-for-woocommerce'));
         }
         
         // Apply the historical content
@@ -436,7 +436,7 @@ class RTAI_WC_Composer {
             $response = $api_client->generate_sync('attributes', $context);
             return $response['content'] ?? array();
         } catch (Exception $e) {
-            throw new Exception(__('Failed to extract attributes: ', 'ai-content-for-woocommerce') . $e->getMessage());
+            throw new Exception(esc_html__('Failed to extract attributes: ', 'ai-content-for-woocommerce') . esc_html($e->getMessage()));
         }
     }
 }

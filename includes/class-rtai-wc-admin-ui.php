@@ -44,7 +44,7 @@ class RTAI_WC_Admin_UI {
      */
     public function handle_save_api_key_ajax() {
         // Check nonce
-        if (!wp_verify_nonce(wp_unslash($_POST['_wpnonce'] ?? ''), 'rtai_wc_save_api_key_nonce')) {
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'] ?? '')), 'rtai_wc_save_api_key_nonce')) {
             wp_send_json_error(array('message' => __('Security check failed.', 'ai-content-for-woocommerce')));
             return;
         }
@@ -76,6 +76,7 @@ class RTAI_WC_Admin_UI {
                 wp_send_json_error(array('message' => __('API key saved but connection test failed.', 'ai-content-for-woocommerce')));
             }
         } catch (Exception $e) {
+            /* translators: %s: error message */
             wp_send_json_error(array('message' => sprintf(__('API key saved but connection test failed: %s', 'ai-content-for-woocommerce'), $e->getMessage())));
         }
     }
@@ -90,7 +91,7 @@ class RTAI_WC_Admin_UI {
         
         // Show nonce validation notice
         if (isset($_GET['nonce'])) {
-            if (!wp_verify_nonce($_GET['nonce'], 'rtai_wc_nonce')) {
+            if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['nonce'])), 'rtai_wc_nonce')) {
                 echo '<div class="notice notice-error is-dismissible">';
                 echo '<p>' . esc_html__('Security check failed.', 'ai-content-for-woocommerce') . '</p>';
                 echo '</div>';
@@ -100,12 +101,13 @@ class RTAI_WC_Admin_UI {
         // Show bulk operation results
         if (isset($_GET['rtai_bulk_started'])) {
             $count = intval($_GET['count'] ?? 0);
-            $batch_id = sanitize_text_field($_GET['batch_id'] ?? '');
+            $batch_id = sanitize_text_field(wp_unslash($_GET['batch_id'] ?? ''));
             
             echo '<div class="notice notice-info is-dismissible">';
+            /* translators: %1$d: number of products, %2$s: batch ID */
             echo '<p>' . sprintf(
-                esc_html__('AI content generation started for %d products. Batch ID: %s', 'ai-content-for-woocommerce'),
-                $count,
+                esc_html__('AI content generation started for %1$d products. Batch ID: %2$s', 'ai-content-for-woocommerce'),
+                esc_html($count),
                 esc_html($batch_id)
             ) . '</p>';
             echo '</div>';
@@ -119,8 +121,9 @@ class RTAI_WC_Admin_UI {
         $settings_url = admin_url('options-general.php?page=rtai-wc-settings');
         
         echo '<div class="notice notice-warning">';
+        /* translators: %1$s: opening link tag, %2$s: closing link tag */
         echo '<p>' . sprintf(
-            esc_html__('RapidTextAI for WooCommerce is not connected. %sConnect now%s to start generating AI content.', 'ai-content-for-woocommerce'),
+            esc_html__('RapidTextAI for WooCommerce is not connected. %1$sConnect now%2$s to start generating AI content.', 'ai-content-for-woocommerce'),
             '<a href="' . esc_url($settings_url) . '">',
             '</a>'
         ) . '</p>';
@@ -136,7 +139,6 @@ class RTAI_WC_Admin_UI {
         
         // Handle form submission
         if (isset($_POST['submit'])) {
-            check_admin_referer('rtai_wc_settings');
             $this->handle_settings_save();
         }
         
@@ -168,14 +170,17 @@ class RTAI_WC_Admin_UI {
      * Handle settings save
      */
     private function handle_settings_save() {
+        // Verify nonce
+        check_admin_referer('rtai_wc_settings');
+        
         $settings = array();
         
         // Sanitize and save settings
-        $settings['api_key'] = sanitize_text_field($_POST['api_key'] ?? '');
-        $settings['model_profile'] = sanitize_key($_POST['model_profile'] ?? 'gpt-4o');
-        $settings['temperature'] = floatval($_POST['temperature'] ?? 0.7);
-        $settings['max_tokens'] = intval($_POST['max_tokens'] ?? 2000);
-        $settings['tone'] = sanitize_text_field($_POST['tone'] ?? 'professional');
+        $settings['api_key'] = sanitize_text_field(wp_unslash($_POST['api_key'] ?? ''));
+        $settings['model_profile'] = sanitize_key(wp_unslash($_POST['model_profile'] ?? 'gpt-4o'));
+        $settings['temperature'] = floatval(wp_unslash($_POST['temperature'] ?? 0.7));
+        $settings['max_tokens'] = intval(wp_unslash($_POST['max_tokens'] ?? 2000));
+        $settings['tone'] = sanitize_text_field(wp_unslash($_POST['tone'] ?? 'professional'));
         $settings['profanity_filter'] = isset($_POST['profanity_filter']);
         $settings['brand_safety'] = isset($_POST['brand_safety']);
         
@@ -184,7 +189,7 @@ class RTAI_WC_Admin_UI {
         $template_fields = array('title', 'short_description', 'long_description', 'seo_title', 'seo_description', 'bullets', 'faq');
         
         foreach ($template_fields as $field) {
-            $templates[$field] = wp_kses_post($_POST['template_' . $field] ?? '');
+            $templates[$field] = wp_kses_post(wp_unslash($_POST['template_' . $field] ?? ''));
         }
         $settings['templates'] = $templates;
         

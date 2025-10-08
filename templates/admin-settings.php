@@ -2,9 +2,6 @@
 /**
  * Admin Settings Page Template
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -84,8 +81,9 @@ $current_api_key = $settings['api_key'] ?? '';
                             </button>
                             <p class="description">
                                 <?php 
+                                /* translators: %1$s: opening link tag, %2$s: closing link tag */
                                 printf(
-                                    esc_html__('Get your API key from %sRapidTextAI Dashboard%s or use the authenticate button above.', 'ai-content-for-woocommerce'),
+                                    esc_html__('Get your API key from %1$sRapidTextAI Dashboard%2$s or use the authenticate button above.', 'ai-content-for-woocommerce'),
                                     '<a href="https://app.rapidtextai.com/dashboard" target="_blank">',
                                     '</a>'
                                 );
@@ -484,7 +482,7 @@ jQuery(document).ready(function($) {
                 $.post(ajaxurl, {
                     action: 'rtai_wc_save_api_key',
                     api_key: apiKey,
-                    _wpnonce: '<?php echo wp_create_nonce('rtai_wc_save_api_key_nonce'); ?>'
+                    _wpnonce: '<?php echo esc_attr(wp_create_nonce('rtai_wc_save_api_key_nonce')); ?>'
                 }, function(response) {
                     $('#rtai_wc_status_message').html(response.message);
                     if (response.success) {
@@ -570,7 +568,7 @@ jQuery(document).ready(function($) {
             type: 'POST',
             data: {
                 action: 'rtai_wc_get_recent_activity',
-                nonce: '<?php echo wp_create_nonce('rtai_wc_nonce'); ?>'
+                nonce: '<?php echo esc_attr(wp_create_nonce('rtai_wc_nonce')); ?>'
             },
             success: function(response) {
                 if (response.success) {

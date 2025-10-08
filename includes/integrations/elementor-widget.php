@@ -14,7 +14,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
     }
     
     public function get_title() {
-        return __('RapidTextAI Content', 'ai-content-for-woocommerce');
+        return esc_html__('RapidTextAI Content', 'ai-content-for-woocommerce');
     }
     
     public function get_icon() {
@@ -34,7 +34,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'content_section',
             [
-                'label' => __('AI Content Settings', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('AI Content Settings', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -42,15 +42,15 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'content_type',
             [
-                'label' => __('Content Type', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Content Type', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => 'title',
                 'options' => [
-                    'title' => __('Product Title', 'ai-content-for-woocommerce'),
-                    'short_description' => __('Short Description', 'ai-content-for-woocommerce'),
-                    'long_description' => __('Long Description', 'ai-content-for-woocommerce'),
-                    'bullets' => __('Feature Bullets', 'ai-content-for-woocommerce'),
-                    'faq' => __('FAQ Content', 'ai-content-for-woocommerce'),
+                    'title' => esc_html__('Product Title', 'ai-content-for-woocommerce'),
+                    'short_description' => esc_html__('Short Description', 'ai-content-for-woocommerce'),
+                    'long_description' => esc_html__('Long Description', 'ai-content-for-woocommerce'),
+                    'bullets' => esc_html__('Feature Bullets', 'ai-content-for-woocommerce'),
+                    'faq' => esc_html__('FAQ Content', 'ai-content-for-woocommerce'),
                 ],
             ]
         );
@@ -58,30 +58,30 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'product_id',
             [
-                'label' => __('Product ID', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Product ID', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::NUMBER,
                 'default' => 0,
-                'description' => __('Leave empty to use current product', 'ai-content-for-woocommerce'),
+                'description' => esc_html__('Leave empty to use current product', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'auto_generate',
             [
-                'label' => __('Auto Generate', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Auto Generate', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'no',
-                'description' => __('Automatically generate content if empty', 'ai-content-for-woocommerce'),
+                'description' => esc_html__('Automatically generate content if empty', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'show_generate_button',
             [
-                'label' => __('Show Generate Button', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Show Generate Button', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
                 'default' => 'yes',
-                'description' => __('Show button to generate new content', 'ai-content-for-woocommerce'),
+                'description' => esc_html__('Show button to generate new content', 'ai-content-for-woocommerce'),
             ]
         );
         
@@ -90,7 +90,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'generation_section',
             [
-                'label' => __('Generation Options', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Generation Options', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -98,17 +98,17 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'tone',
             [
-                'label' => __('Tone', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Tone', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'default' => '',
                 'options' => [
-                    '' => __('Use Default', 'ai-content-for-woocommerce'),
-                    'professional' => __('Professional', 'ai-content-for-woocommerce'),
-                    'friendly' => __('Friendly', 'ai-content-for-woocommerce'),
-                    'casual' => __('Casual', 'ai-content-for-woocommerce'),
-                    'luxury' => __('Luxury', 'ai-content-for-woocommerce'),
-                    'technical' => __('Technical', 'ai-content-for-woocommerce'),
-                    'playful' => __('Playful', 'ai-content-for-woocommerce'),
+                    '' => esc_html__('Use Default', 'ai-content-for-woocommerce'),
+                    'professional' => esc_html__('Professional', 'ai-content-for-woocommerce'),
+                    'friendly' => esc_html__('Friendly', 'ai-content-for-woocommerce'),
+                    'casual' => esc_html__('Casual', 'ai-content-for-woocommerce'),
+                    'luxury' => esc_html__('Luxury', 'ai-content-for-woocommerce'),
+                    'technical' => esc_html__('Technical', 'ai-content-for-woocommerce'),
+                    'playful' => esc_html__('Playful', 'ai-content-for-woocommerce'),
                 ],
             ]
         );
@@ -116,18 +116,18 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'audience',
             [
-                'label' => __('Target Audience', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Target Audience', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __('e.g., fitness enthusiasts, professionals', 'ai-content-for-woocommerce'),
+                'placeholder' => esc_html__('e.g., fitness enthusiasts, professionals', 'ai-content-for-woocommerce'),
             ]
         );
         
         $this->add_control(
             'keywords',
             [
-                'label' => __('Keywords', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Keywords', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __('keyword1, keyword2, keyword3', 'ai-content-for-woocommerce'),
+                'placeholder' => esc_html__('keyword1, keyword2, keyword3', 'ai-content-for-woocommerce'),
             ]
         );
         
@@ -136,7 +136,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->start_controls_section(
             'style_section',
             [
-                'label' => __('Style', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Style', 'ai-content-for-woocommerce'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
@@ -152,7 +152,7 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_control(
             'content_color',
             [
-                'label' => __('Text Color', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Text Color', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .rtai-elementor-content' => 'color: {{VALUE}};',
@@ -163,23 +163,23 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         $this->add_responsive_control(
             'content_align',
             [
-                'label' => __('Alignment', 'ai-content-for-woocommerce'),
+                'label' => esc_html__('Alignment', 'ai-content-for-woocommerce'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', 'ai-content-for-woocommerce'),
+                        'title' => esc_html__('Left', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', 'ai-content-for-woocommerce'),
+                        'title' => esc_html__('Center', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', 'ai-content-for-woocommerce'),
+                        'title' => esc_html__('Right', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
-                        'title' => __('Justified', 'ai-content-for-woocommerce'),
+                        'title' => esc_html__('Justified', 'ai-content-for-woocommerce'),
                         'icon' => 'eicon-text-align-justify',
                     ],
                 ],
@@ -208,8 +208,8 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
         if (empty($product_id)) {
             if (\Elementor\Plugin::$instance->editor->is_edit_mode()) {
                 echo '<div class="rtai-elementor-placeholder">';
-                echo '<p>' . __('RapidTextAI Content Widget', 'ai-content-for-woocommerce') . '</p>';
-                echo '<p>' . __('This widget will display AI-generated content for the current product.', 'ai-content-for-woocommerce') . '</p>';
+                echo '<p>' . esc_html__('RapidTextAI Content Widget', 'ai-content-for-woocommerce') . '</p>';
+                echo '<p>' . esc_html__('This widget will display AI-generated content for the current product.', 'ai-content-for-woocommerce') . '</p>';
                 echo '</div>';
             }
             return;
@@ -236,14 +236,14 @@ class RTAI_WC_Elementor_Widget extends \Elementor\Widget_Base {
             echo '</div>';
         } else {
             echo '<div class="rtai-elementor-placeholder">';
-            echo '<p>' . __('No content available. Generate content to see it here.', 'ai-content-for-woocommerce') . '</p>';
+            echo '<p>' . esc_html__('No content available. Generate content to see it here.', 'ai-content-for-woocommerce') . '</p>';
             echo '</div>';
         }
         
         if ($settings['show_generate_button'] === 'yes') {
             echo '<div class="rtai-elementor-actions">';
             echo '<button type="button" class="rtai-elementor-generate" data-settings="' . esc_attr(json_encode($settings)) . '">';
-            echo __('Generate Content', 'ai-content-for-woocommerce');
+            echo esc_html__('Generate Content', 'ai-content-for-woocommerce');
             echo '</button>';
             echo '</div>';
         }

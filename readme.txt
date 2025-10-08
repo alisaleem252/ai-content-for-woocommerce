@@ -1,14 +1,14 @@
 === RapidText AI Content for WooCommerce ===
 Contributors: rapidtextai
-Tags: woocommerce, ai, content generation, seo, product descriptions, automation
+Tags: woocommerce, ai, content generation, seo, product descriptions
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Generate AI-powered content for WooCommerce products with 1-click automation. Create titles, descriptions, SEO meta, FAQs, and translations using RapidText AI's advanced models.
+Generate AI-powered content for WooCommerce products with 1-click. Create titles, descriptions, SEO meta, FAQs, and translations using RapidText AI's advanced models.
 
 == Description ==
 

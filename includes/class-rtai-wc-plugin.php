@@ -74,14 +74,20 @@ class RTAI_WC_Plugin {
      */
     public function show_bulk_notices() {
         if (isset($_GET['rtai_bulk_started']) && $_GET['rtai_bulk_started'] == 1) {
-            $count = intval($_GET['count'] ?? 0);
-            $batch_id = sanitize_text_field($_GET['batch_id'] ?? '');
+            // Verify nonce for security
+            if (!isset($_GET['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['nonce'])), 'rtai_wc_nonce')) {
+                return;
+            }
+            
+            $count = intval(wp_unslash($_GET['count'] ?? 0));
+            $batch_id = sanitize_text_field(wp_unslash($_GET['batch_id'] ?? ''));
             
             echo '<div class="notice notice-success is-dismissible">';
+            /* translators: %1$d: number of products, %2$s: batch ID */
             echo '<p>' . sprintf(
-                esc_html__('AI content generation started for %d products. Batch ID: %s', 'ai-content-for-woocommerce'),
-                $count,
-                $batch_id
+                esc_html__('AI content generation started for %1$d products. Batch ID: %2$s', 'ai-content-for-woocommerce'),
+                esc_html($count),
+                esc_html($batch_id)
             ) . '</p>';
             echo '</div>';
         }
@@ -93,18 +99,16 @@ class RTAI_WC_Plugin {
     public function ajax_bulk_generate() {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
-        ini_set('display_errors', 1);
-        error_reporting(E_ALL);
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_ids = array_map('intval', $_POST['post_ids'] ?? array());
         $artifacts = array_map('sanitize_key', $_POST['artifacts'] ?? array());
-        $context_overrides = wp_unslash($_POST['context_overrides'] ?? array());
+        $context_overrides = $this->sanitize_context_overrides(wp_unslash($_POST['context_overrides'] ?? array()));
         
         if (empty($post_ids) || empty($artifacts)) {
-            wp_send_json_error(__('Invalid parameters.', 'ai-content-for-woocommerce'));
+            wp_send_json_error(esc_html__('Invalid parameters.', 'ai-content-for-woocommerce'));
         }
         
         try {
@@ -130,13 +134,13 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
-        $batch_id = sanitize_text_field($_POST['batch_id'] ?? '');
+        $batch_id = sanitize_text_field(wp_unslash($_POST['batch_id'] ?? ''));
         
         if (empty($batch_id)) {
-            wp_send_json_error(__('Invalid batch ID.', 'ai-content-for-woocommerce'));
+            wp_send_json_error(esc_html__('Invalid batch ID.', 'ai-content-for-woocommerce'));
         }
         
         try {
@@ -202,9 +206,9 @@ class RTAI_WC_Plugin {
         );
         wp_enqueue_script(
             'rtai-marked',
-            'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
-            array(),
-            null,
+            RTAI_WC_PLUGIN_URL . 'assets/js/marked.min.js',
+            array('jquery', 'wp-util'),
+            RTAI_WC_VERSION,
             true
         );
         
@@ -344,12 +348,12 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
         $artifacts = array_map('sanitize_key', $_POST['artifacts'] ?? array());
-        $context_overrides = wp_unslash($_POST['context_overrides'] ?? array());
+        $context_overrides = $this->sanitize_context_overrides(wp_unslash($_POST['context_overrides'] ?? array()));
         
         try {
             $result = RTAI_WC_Composer::get_instance()->generate_content(
@@ -371,14 +375,14 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         $job_id = intval($_POST['job_id'] ?? 0);
-        $batch_id = sanitize_text_field($_POST['batch_id'] ?? '');
+        $batch_id = sanitize_text_field(wp_unslash($_POST['batch_id'] ?? ''));
         
         if ($job_id) {
             $status = RTAI_WC_Jobs::get_instance()->get_job_status($job_id);
         } elseif ($batch_id) {
             $status = RTAI_WC_Jobs::get_instance()->get_batch_status($batch_id);
         } else {
-            wp_send_json_error(__('Invalid job or batch ID.', 'ai-content-for-woocommerce'));
+            wp_send_json_error(esc_html__('Invalid job or batch ID.', 'ai-content-for-woocommerce'));
         }
         
         wp_send_json_success($status);
@@ -391,12 +395,12 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
         $artifact = sanitize_key($_POST['artifact'] ?? '');
-        $content = wp_unslash($_POST['content'] ?? '');
+        $content = wp_kses_post(wp_unslash($_POST['content'] ?? ''));
         
         try {
             $result = RTAI_WC_Composer::get_instance()->apply_content($post_id, $artifact, $content);
@@ -413,11 +417,11 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
-        $history_id = sanitize_text_field($_POST['history_id'] ?? '');
+        $history_id = sanitize_text_field(wp_unslash($_POST['history_id'] ?? ''));
         
         try {
             $result = RTAI_WC_Composer::get_instance()->rollback_content($post_id, $history_id);
@@ -431,18 +435,15 @@ class RTAI_WC_Plugin {
      * AJAX: Get stream configuration
      */
     public function ajax_get_stream_config() {
-        ini_set('display_errors', 1);
-        error_reporting(E_ALL);
-        
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('edit_posts')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         $post_id = intval($_POST['post_id'] ?? 0);
         $artifact = sanitize_key($_POST['artifact'] ?? '');
-        $context_overrides = wp_unslash($_POST['context_overrides'] ?? array());
+        $context_overrides = $this->sanitize_context_overrides(wp_unslash($_POST['context_overrides'] ?? array()));
         
         try {
             // Get product context
@@ -464,7 +465,7 @@ class RTAI_WC_Plugin {
         check_ajax_referer('rtai_wc_nonce', 'nonce');
         
         if (!current_user_can('manage_options')) {
-            wp_die(__('Insufficient permissions.', 'ai-content-for-woocommerce'));
+            wp_die(esc_html__('Insufficient permissions.', 'ai-content-for-woocommerce'));
         }
         
         try {
@@ -568,5 +569,37 @@ class RTAI_WC_Plugin {
         );
         
         add_option('rtai_wc_settings', $default_settings);
+    }
+    
+    /**
+     * Sanitize context overrides array
+     */
+    private function sanitize_context_overrides($context_overrides) {
+        if (!is_array($context_overrides)) {
+            return array();
+        }
+        
+        $sanitized = array();
+        $allowed_keys = array('audience', 'tone', 'keywords', 'features', 'target_language', 'formality', 'translation_mode', 'focus_keywords', 'competitor_analysis', 'overwrite');
+        
+        foreach ($context_overrides as $key => $value) {
+            $sanitized_key = sanitize_key($key);
+            
+            if (!in_array($sanitized_key, $allowed_keys)) {
+                continue;
+            }
+            
+            if (is_string($value)) {
+                $sanitized[$sanitized_key] = sanitize_text_field($value);
+            } elseif (is_array($value)) {
+                $sanitized[$sanitized_key] = array_map('sanitize_text_field', $value);
+            } elseif (is_bool($value)) {
+                $sanitized[$sanitized_key] = (bool) $value;
+            } else {
+                $sanitized[$sanitized_key] = sanitize_text_field((string) $value);
+            }
+        }
+        
+        return $sanitized;
     }
 }

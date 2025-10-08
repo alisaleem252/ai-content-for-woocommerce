@@ -59,13 +59,13 @@ class RTAI_WC_API_Client {
      */
     public function test_connection() {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $response = $this->make_request('auth/test', array(), 'GET');
         
         if (is_wp_error($response)) {
-            throw new Exception($response->get_error_message());
+            throw new Exception(esc_html($response->get_error_message()));
         }
         
         return array(
@@ -116,7 +116,7 @@ class RTAI_WC_API_Client {
      */
     public function generate_sync($artifact, $context, $model_profile = null) {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $settings = get_option('rtai_wc_settings', array());
@@ -148,7 +148,7 @@ class RTAI_WC_API_Client {
         $response = $this->make_request('chat/completions', $payload);
         
         if (is_wp_error($response)) {
-            throw new Exception($response->get_error_message());
+            throw new Exception(esc_html($response->get_error_message()));
         }
         
         // Clear quota cache to force refresh
@@ -163,7 +163,7 @@ class RTAI_WC_API_Client {
      */
     public function generate($artifact, $context, $model_profile = null) {
         if (empty($this->api_key)) {
-            throw new Exception(__('API key is required.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('API key is required.', 'ai-content-for-woocommerce'));
         }
         
         $settings = get_option('rtai_wc_settings', array());
@@ -197,7 +197,7 @@ class RTAI_WC_API_Client {
         $response = $this->make_request('chat/completions-stream', $payload, 'POST', true);
         
         if (is_wp_error($response)) {
-            throw new Exception($response->get_error_message());
+            throw new Exception(esc_html($response->get_error_message()));
         }
         
         // Clear quota cache to force refresh
@@ -245,7 +245,7 @@ class RTAI_WC_API_Client {
      * Get system prompt for artifact type
      */
     private function get_system_prompt($artifact, $settings) {
-        $base_prompt = "You are a professional copywriter specializing in e-commerce content. ";
+        $base_prompt = "You are a professional copywriter specializing in e-commerce content. Generate direct, concise content without conversational phrases like 'of course', 'certainly', or 'I'd be happy to help'. Focus on delivering the requested content immediately without explanations or introductory text. ";
         
         // Add safety filters
         if ($settings['profanity_filter'] ?? true) {
@@ -363,7 +363,7 @@ class RTAI_WC_API_Client {
      */
     private function transform_completion_response($response, $artifact) {
         if (empty($response['choices']) || !isset($response['choices'][0]['message']['content'])) {
-            throw new Exception(__('Invalid response format from API.', 'ai-content-for-woocommerce'));
+            throw new Exception(esc_html__('Invalid response format from API.', 'ai-content-for-woocommerce'));
         }
         
         $content = trim($response['choices'][0]['message']['content']);
